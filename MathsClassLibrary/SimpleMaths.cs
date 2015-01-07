@@ -7,23 +7,23 @@
  */
 
 using System;
+using MathsClassLibrary.Generics;
 
 namespace MathsClassLibrary
 {
-    public class SimpleMaths
+    public class SimpleMaths<T>
     {
-        public int APlusB(int a, int b)
+        public T APlusB(Number<T> a, Number<T> b)
         {
-            var result = a + b;
-            return result;
+            return a + b;
         }
 
-        public int ArithmicProgression(int a, int b, int c)
+        public T ArithmicProgression(Number<T> a, Number<T> b, int c)
         {
             //First term        : a
             //Common Differnce  : b
             //Number of terms   : c
-            var result = 0;
+            T result = default(T);
 
             for (var i = 1; i < c; i++)
             {
@@ -33,9 +33,9 @@ namespace MathsClassLibrary
             return result;
         }
 
-        public int MinOrMaxOfTwo(int a, int b, bool minimum)
+        public T MinOrMaxOfTwo(Number<T> a, Number<T> b, bool minimum)
         {
-            return minimum ? Math.Min(a, b) : Math.Max(a, b);
+            return minimum ? Number<T>.Min(a, b) : Number<T>.Max(a, b);
         }
 
         public int MinOrMaxOfThree(int a, int b, int c, bool minimum)

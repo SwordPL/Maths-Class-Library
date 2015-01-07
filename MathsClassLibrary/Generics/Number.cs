@@ -7,16 +7,18 @@ using MathsClassLibrary.Generics.Implementation;
 
 namespace MathsClassLibrary.Generics
 {
-    class Number<T>
+    public class Number<T>
     {
         private T value;
+
+        private static ICalc<T> calc; 
 
         public Number(T val)
         {
             value = val;
         }
 
-        private static Type GetCalculator()
+        private static Type GetCalculatorType()
         {
             var type = typeof(T);
 
@@ -32,5 +34,101 @@ namespace MathsClassLibrary.Generics
                                                               " and cannot be used.", type.Name));
             return calcType;
         }
+
+        public static ICalc<T> Calculator
+        {
+            get { return calc ?? CreateCalc(); }
+        }
+
+        private static ICalc<T> CreateCalc()
+        {
+            return calc = Activator.CreateInstance(GetCalculatorType()) as ICalc<T>;
+        }
+
+        #region Operations
+        public static T Sum(T a, T b)
+        {
+            return Calculator.Sum(a, b);
+        }
+
+        public static T Difference(T a, T b)
+        {
+            return Calculator.Difference(a, b);
+        }
+
+        public static T Multiply(T a, T b)
+        {
+            return Calculator.Multiply(a, b);
+        }
+
+        public static T Divide(T a, T b)
+        {
+            return Calculator.Divide(a, b);
+        }
+
+        public static T Divide(T a, int b)
+        {
+            return Calculator.Divide(a, b);
+        }
+
+        public static int Compare(T a, T b)
+        {
+            return Calculator.Compare(a, b);
+        }
+
+        public static T Min(Number<T> a, Number<T> b)
+        {
+            return a < b ? a : b;
+        }
+
+        public static T Max(Number<T> a, Number<T> b)
+        {
+            return a > b ? a : b;
+        }
+        #endregion
+
+        #region Operators
+        public static implicit operator Number<T>(T a)
+        {
+            return new Number<T>(a);
+        }
+
+        public static implicit operator T(Number<T> a)
+        {
+            return a.value;
+        }
+
+        public static Number<T> operator +(Number<T> a, Number<T> b)
+        {
+            return Calculator.Sum(a, b);
+        }
+        public static Number<T> operator -(Number<T> a, Number<T> b)
+        {
+            return Calculator.Difference(a, b);
+        }
+        public static Number<T> operator *(Number<T> a, Number<T> b)
+        {
+            return Calculator.Multiply(a, b);
+        }
+        public static Number<T> operator /(Number<T> a, Number<T> b)
+        {
+            return Calculator.Divide(a, b);
+        }
+        public static Number<T> operator /(Number<T> a, int b)
+        {
+            return Calculator.Divide(a, b);
+        }
+
+        public static bool operator >(Number<T> a, Number<T> b)
+        {
+            return Calculator.Compare(a, b) > 0;
+        }
+
+        public static bool operator <(Number<T> a, Number<T> b)
+        {
+            return Calculator.Compare(a, b) < 0;
+        }
+
+        #endregion
     }
 }
